@@ -1,4 +1,4 @@
-import Product from "../Models/Product.js";
+import Product from "../Models/product.js";
 
 
 export function getProduct(req,res){

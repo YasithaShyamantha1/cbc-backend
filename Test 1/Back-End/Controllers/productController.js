@@ -1,4 +1,8 @@
 import Product from '../Models/product.js';
+function isAdmin(req) {
+    return req.user && req.user.type === 'admin'; // Adjust 'type' to match your user schema
+}
+
 
 export function createProduct(req,res){
     if(isAdmin(req)){

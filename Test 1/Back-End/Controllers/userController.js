@@ -95,4 +95,4 @@ export function isCustomer(req){
     }
 
     return true
-};
+}

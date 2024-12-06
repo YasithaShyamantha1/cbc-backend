@@ -1,5 +1,34 @@
-import product from '../model/product.js';
+import Product from '../Models/product.js';
 
 export function createProduct(req,res){
+    if(isAdmin(req)){
+        res.json({
+            message: "Please login as Admin to add products"
+        })
+        return
+        
+    }
+    const newProductData = req.body
+
+    const product = new Product(newProductData)
+
+        //console.log(req.user)
+       // const product = new Product(req.body)
+        product.save().then(()=>{
+            res.json({
+                message: "Product Created"
+            })
+        }).catch((error) => {
+            res.json({
+                message: error.message,
+            });
+        });
+    }
+    export function getProduct(res,req){
+        Product.find({}).then((product)=>{
+            res.json(product)
+        })
+    }
+
     
-}
+    

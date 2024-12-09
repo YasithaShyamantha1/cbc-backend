@@ -30,10 +30,10 @@ const orderSchema = mongoose.Schema({
             required:true,
         }
     }],
-    date:{
-        type:date,
-        default:Date.now,
-    },
+    // date:{
+    //     type:date,
+    //     default:Date.now,
+    // },
     paymentId:{
         type:String,
     },
@@ -60,3 +60,4 @@ const orderSchema = mongoose.Schema({
 })
 
 const Order = mongoose.model("orders",orderSchema);
+export default Order;

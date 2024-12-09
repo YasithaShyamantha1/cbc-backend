@@ -1,0 +1,58 @@
+import Order from "../Models/order.js";
+import { isCustomer } from "./userController.js";
+
+export async function createOrder(req, res) {
+    // Check if the user is a customer
+    if (!isCustomer(req)) {
+        return res.json({
+            message: "Please login as Customer to create Order",
+        });
+    }
+
+    try {
+        // Fetch the latest order to generate a new Order ID
+        const latestOrder = await Order.find().sort({ date: -1 }).limit(1);
+        let orderId;
+
+        if (latestOrder.length === 0) {
+            orderId = "CBC0001";
+        } else {
+            const currentOrderId = latestOrder[0].orderId; // Correct typo `Orde.orderId`
+            const numberString = currentOrderId.replace("CBC", "");
+            const number = parseInt(numberString); // Fix `pareInt` typo
+            const newNumber = (number + 1).toString().padStart(4, "0");
+            orderId = "CBC" + newNumber;
+        }
+
+        // Add order ID and email to the order data
+        const newOrderData = req.body;
+        newOrderData.orderId = orderId;
+        newOrderData.email = req.user.email;
+
+        // Save the order in the database
+        const order = new Order(newOrderData);
+        await order.save();
+
+        // Send success response
+        return res.json({
+            message: "Order Created",
+        });
+    } catch (error) {
+        // Handle errors
+        return res.status(500).json({
+            message: error.message,
+        });
+    }
+}
+
+export async function getOrders(req, res) {
+    try {
+        const orders = await Order.find({ email: req.user.email });
+        // Send the orders as response
+        return res.json(orders);
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message,
+        });
+    }
+}

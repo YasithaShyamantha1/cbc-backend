@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
+// import reactLogo from './assets/react.svg';
+// import viteLogo from '/vite.svg';
 import './App.css';
 import LoginPage from './pages/loginPage';
 import HomePage from './pages/homePage';
@@ -19,7 +19,7 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/admin/*" element={<AdminHomePage />} />
-        <Route path="*" element={<h1>404 Not Found</h1>} />
+        {/* <Route path="*" element={<h1>404 Not Found</h1>} /> */}
       </Routes>
     </BrowserRouter>
   );

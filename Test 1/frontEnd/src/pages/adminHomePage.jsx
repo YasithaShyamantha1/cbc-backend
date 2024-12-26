@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link,Routes, Route } from 'react-router-dom';
 import { FaTachometerAlt, FaBox, FaShoppingCart, FaUsers } from 'react-icons/fa';
 
 export default function AdminHomePage() {
@@ -36,17 +36,20 @@ export default function AdminHomePage() {
       {/* Main Content */}
       <div className="w-3/4 h-screen bg-gray-100 p-6">
         <h1 className="text-3xl font-bold text-blue-600">Welcome to the Admin Dashboard</h1>
-        {/* <Routes>
-        <Route path="/dashboard" element={<h1>Dashboard</h1>}/>
-        <Route path="/products" element={<h1>Products</h1>} />
-        <Route path="/orders" element={<h1>Orders</h1>} />
-        <Route path="/customers" element={<h1>Customers</h1>} />
-
-        </Routes> */}
-        <p className="text-gray-600 mt-4">
+       <p className="text-gray-600 mt-4">
           Select an option from the sidebar to get started managing your site.
         </p>
+        {/* <BrowserRouter> 
+        <Routes>
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/products" element={<AdminProductPage />} />
+          <Route path="/orders" element={<Orders />} />
+          <Route path="/customers" element={<Customers />} />
+        </Routes>
+        </BrowserRouter> */}
       </div>
+      
     </div>
+    
   );
 }

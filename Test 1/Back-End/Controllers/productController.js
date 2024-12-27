@@ -28,11 +28,16 @@ export function createProduct(req,res){
             });
         });
     }
-    export function getProduct(res,req){
-        Product.find({}).then((product)=>{
-            res.json(product)
-        })
-    }
-
+    export function getProduct(req, res) {
+        Product.find({})
+          .then((product) => {
+            res.json(product);
+          })
+          .catch((error) => {
+            res.status(500).json({
+              message: error.message,
+            });
+          });
+      }
     
     

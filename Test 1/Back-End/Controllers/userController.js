@@ -59,6 +59,12 @@ export function loginUser(req, res) {
             res.json({
                 message: "User logged in",
                 token: token,
+                user: {
+                    firstName:user.firstName,
+                    type:user.type,
+                    profilePicture:user.UserprofilePicture,
+                    
+                }
             });
         } else {
             res.json({

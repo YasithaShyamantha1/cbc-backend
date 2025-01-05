@@ -39,5 +39,28 @@ export function createProduct(req,res){
             });
           });
       }
+
+      export function deleteProduct(req, res) {
+        if(isAdmin(req)){
+            res.status(403).json({
+                message:"please login as Administrator"
+            })
+            return
+        }
+        
+        const productId = req.params.productId
+
+        Product.deleteOne(
+            {productId :productId}
+        ).then(()=>{
+            res.json({
+                message:"Product Deleted!"
+            })
+        }).catch((error)=>{
+            res.status(403).json({ 
+                message:error
+            })
+        })
+      }
     
     

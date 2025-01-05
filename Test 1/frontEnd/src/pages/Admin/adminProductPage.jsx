@@ -1,38 +1,27 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { FaEdit, FaPlus, FaTrashAlt } from "react-icons/fa";
-import { Link } from "react-router-dom"; // Import icons
+import { Link } from "react-router-dom";
+import toast, { Toaster } from 'react-hot-toast';
+ 
 
 export default function AdminProductPage() {
-  const [products, setProducts] = useState([
-    {
-      productId: "BEAUTY001",
-      productName: "Hydrating Face Serum",
-      altNames: ["Moisturizing Face Serum", "Skin Brightening Serum"],
-      images: [
-        "https://example.com/beauty-product1.jpg",
-        "https://example.com/beauty-product2.jpg",
-        "https://example.com/beauty-product3.jpg",
-      ],
-      price: 29.99,
-      lastPrice: 39.99,
-      stock: 100,
-      description:
-        "A lightweight, hydrating face serum enriched with hyaluronic acid and vitamin C to boost skin radiance and improve texture. Perfect for all skin types.",
-    },
-  ]);
+  const [products, setProducts] = useState([]);
+  const [productsLoaded, setProductsLoaded]=useState(false);
 
   useEffect(() => {
-    axios
+    if(!productsLoaded){
+      axios
       .get("http://localhost:5000/product")
       .then((res) => {
         console.log("API Response:", res.data);
         setProducts(res.data);
+        setProductsLoaded(true);
       })
       .catch((error) => {
         console.error("Error fetching products:", error);
-      });
-  }, []);
+      });}
+  }, [productsLoaded]);
 
   return (
     <div className="p-8">
@@ -75,7 +64,21 @@ export default function AdminProductPage() {
                   {/* Delete Button */}
                   <button
                     className="flex items-center gap-1 px-3 py-1 text-red-600 border border-red-600 rounded-lg hover:bg-red-600 hover:text-white"
-                    onClick={() => console.log("Delete", product.productId)}
+                    onClick={() => {
+                      alert(product.productId);
+                      const token = localStorage.getItem("token");
+                  
+                      axios.delete(`http://localhost:5000/product/${product.productId}`, {
+                          headers: {
+                              Authorization: `Bearer ${token}`,
+                          },
+                      })
+                      .then((res) => {
+                          console.log(res.data);
+                          toast.success("Product Deleted Successfully");
+                          setProductsLoaded(false);
+                      });
+                  }}
                   >
                     <FaTrashAlt /> Delete
                   </button>

@@ -1,5 +1,8 @@
 import axios from "axios";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function AddProductForm() {
   const [productId, setProductId] = useState("");
@@ -10,6 +13,7 @@ export default function AddProductForm() {
   const [lastPrice, setLastPrice] = useState("");
   const [stock, setStock] = useState("");
   const [description, setDescription] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,12 +37,11 @@ export default function AddProductForm() {
     try {
       const response = await axios.post("http://localhost:5000/product", product, {
         headers: {
-          Authorization: `Bearer ${token}`, // Ensure correct spacing after "Bearer"
+          Authorization: `Bearer ${token}`,
         },
       });
 
-      console.log("Product added successfully:", response.data);
-      alert("Product added successfully!");
+      toast.success("Product added successfully!", { position: "top-right" });
       
       // Clear form fields after successful submission
       setProductId("");
@@ -49,22 +52,27 @@ export default function AddProductForm() {
       setLastPrice("");
       setStock("");
       setDescription("");
+
+      // Navigate to the admin/products page
+      setTimeout(() => {
+        navigate("/admin/products");
+      }, 2000); // Navigate after showing success toast
     } catch (error) {
       console.error("Error adding product:", error);
 
-      // Handle specific HTTP errors
       if (error.response && error.response.status === 404) {
-        alert("API endpoint not found. Please check your backend server.");
+        toast.error("API endpoint not found. Please check your backend server.", { position: "top-right" });
       } else if (error.response && error.response.status === 401) {
-        alert("Unauthorized. Please check your authentication token.");
+        toast.error("Unauthorized. Please check your authentication token.", { position: "top-right" });
       } else {
-        alert("An error occurred while adding the product. Please try again.");
+        toast.error("An error occurred while adding the product. Please try again.", { position: "top-right" });
       }
     }
   };
 
   return (
     <div className="w-full max-w-xl mx-auto p-6 bg-white">
+      <ToastContainer />
       <h2 className="text-2xl font-semibold mb-6">Add New Product</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">

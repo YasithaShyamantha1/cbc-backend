@@ -1,6 +1,4 @@
 import { useState } from 'react';
-// import reactLogo from './assets/react.svg';
-// import viteLogo from '/vite.svg';
 import './App.css';
 import {Toaster} from 'react-hot-toast';
 import LoginPage from './pages/loginPage';
@@ -11,6 +9,7 @@ import AdminHomePage from './pages/adminHomePage';
 // Ensure this component exists and is correctly imported
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
 
 function App() {
   const [count, setCount] = useState(0);

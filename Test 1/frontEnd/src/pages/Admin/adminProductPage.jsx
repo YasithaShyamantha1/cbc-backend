@@ -26,7 +26,8 @@ export default function AdminProductPage() {
   return (
     <div className="p-8">
       <h1 className="text-3xl font-bold text-center mb-8">Admin Product Page</h1>
-      <div className="overflow-x-auto">
+
+     { productsLoaded?<div className="overflow-x-auto">
         <Link to={"/admin/products/addProducts"}  className="absolute right-[35px] bottom-[25px] text-[25px] bg-[#2489ee] text-white p-5 rounded-xl hover:bg-[#a4c4ef] hover:rounded-full"><FaPlus/></Link>
         <table className="table-auto w-full text-sm text-left text-gray-500 border border-gray-200">
           <thead className="text-xs text-gray-700 uppercase bg-gray-100">
@@ -87,7 +88,7 @@ export default function AdminProductPage() {
             ))}
           </tbody>
         </table>
-      </div>
+      </div>: <div className="w-[60px] h-[60px] border-[4px] border-gray-200 border-b-[#3b82f6] animate-spin rounded-full"></div>}
     </div>
   );
 }

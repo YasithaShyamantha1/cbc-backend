@@ -3,29 +3,47 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import UploadMediaToSupabase from "../../utils/mediaUpload";
+
+const key =`eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImllamphcGt0cHBwdWZjeHFoZ3F6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzY2NzU2MDEsImV4cCI6MjA1MjI1MTYwMX0.EN51cs6W3K9gh5TgkIN2q6DlwJq6cUlVeewd1HhMo_0
+`
+const url="https://iejjapktpppufcxqhgqz.supabase.co"
 
 export default function AddProductForm() {
   const [productId, setProductId] = useState("");
   const [productName, setProductName] = useState("");
   const [alternativeNames, setAlternativeNames] = useState("");
-  const [imageUrls, setImageUrls] = useState("");
+  const [imageFiles, setImageFiles] = useState([]);
   const [price, setPrice] = useState("");
   const [lastPrice, setLastPrice] = useState("");
   const [stock, setStock] = useState("");
   const [description, setDescription] = useState("");
   const navigate = useNavigate();
 
+  // Helper function to upload images and get URLs
+  const getImageUrls = async () => {
+    const imageUrlsArray = [];
+    for (let i = 0; i < imageFiles.length; i++) {
+      const url = await UploadMediaToSupabase(imageFiles[i]); // Upload each file
+      imageUrlsArray.push(url); // Collect the URL
+      console.log(`Image ${i + 1} uploaded: ${url}`); // Log the uploaded URL
+    }
+    return imageUrlsArray;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const altNames = alternativeNames.split(",");
-    const imgUrls = imageUrls.split(",");
+    const altNames = alternativeNames.split(","); // Parse alternative names
+    console.log("Uploading images...");
+    const imgUrls = await getImageUrls(); // Collect uploaded image URLs
+    console.log("All images uploaded:", imgUrls);
 
     const product = {
       productId,
       productName,
       altNames,
-      images: imgUrls,
+      images: imgUrls, // Use uploaded URLs
       price,
       lastPrice,
       stock,
@@ -42,12 +60,12 @@ export default function AddProductForm() {
       });
 
       toast.success("Product added successfully!", { position: "top-right" });
-      
+
       // Clear form fields after successful submission
       setProductId("");
       setProductName("");
       setAlternativeNames("");
-      setImageUrls("");
+      setImageFiles([]);
       setPrice("");
       setLastPrice("");
       setStock("");
@@ -70,6 +88,7 @@ export default function AddProductForm() {
     }
   };
 
+  // Return UI
   return (
     <div className="w-full max-w-xl mx-auto p-6 bg-white">
       <ToastContainer />
@@ -114,14 +133,13 @@ export default function AddProductForm() {
         </div>
 
         <div className="mb-4">
-          <label htmlFor="imageUrls" className="block text-gray-700">Product Images (URLs)</label>
+          <label htmlFor="imageUrls" className="block text-gray-700">Product Images</label>
           <input
-            type="text"
+            type="file"
             id="imageUrls"
-            value={imageUrls}
-            onChange={(e) => setImageUrls(e.target.value)}
-            placeholder="Enter Image URLs (comma separated)"
             className="w-full p-2 border border-gray-300 rounded-md"
+            onChange={(e) => setImageFiles(Array.from(e.target.files))} // Handle multiple files
+            multiple
           />
         </div>
 

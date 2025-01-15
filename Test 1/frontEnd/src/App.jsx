@@ -15,6 +15,7 @@ function App() {
   const [count, setCount] = useState(0);
 
   return (
+    <div className='bg-primary'>
     <BrowserRouter>
     <Toaster
   position="top-center"
@@ -28,6 +29,7 @@ function App() {
         {/* <Route path="*" element={<h1>404 Not Found</h1>} /> */}
       </Routes>
     </BrowserRouter>
+    </div>
   );
 }
 

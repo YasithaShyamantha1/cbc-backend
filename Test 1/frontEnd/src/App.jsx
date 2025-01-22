@@ -6,10 +6,10 @@ import HomePage from './pages/homePage';
 import SignUpPage from './pages/signUpPage';
 import AdminHomePage from './pages/adminHomePage';
 
+
 // Ensure this component exists and is correctly imported
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-
 
 function App() {
   const [count, setCount] = useState(0);

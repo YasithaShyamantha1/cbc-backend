@@ -62,5 +62,35 @@ export function createProduct(req,res){
             })
         })
       }
+      export function updateProduct(req, res) {
+        // if (!isAdmin(req)) {
+        //     res.status(403).json({
+        //         message: "Please login as Administrator",
+        //     });
+        //     return;
+        // }
+    
+        const productId = req.params.productId;
+        const updatedData = req.body;
+    
+        Product.findOneAndUpdate({ productId: productId }, updatedData, { new: true })
+            .then((updatedProduct) => {
+                if (!updatedProduct) {
+                    res.status(404).json({
+                        message: "Product not found",
+                    });
+                } else {
+                    res.status(200).json({
+                        message: "Product updated successfully",
+                        product: updatedProduct,
+                    });
+                }
+            })
+            .catch((error) => {
+                res.status(500).json({
+                    message: error.message,
+                });
+            });
+    }
     
     

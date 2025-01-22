@@ -1,11 +1,18 @@
+import { Link,Routes } from "react-router-dom";
+import Header from "../components/Header";
+
+
+
 export default function HomePage(){
     return(
-        <div className="home-container h-screen w-full">
-        <div>
-        <h1>Welcome to the Home Page</h1>
-        <p>This is a simple home page. Click below to go to the Login Page.</p>
-        <button onClick={() => alert('Navigate to Login Page')}>Go to Login</button>
-    </div>
+        <div className=" h-screen w-full">
+            <Header/>
+            <Routes path="/*">
+
+
+
+            </Routes>
+      
     </div>
 );
 }

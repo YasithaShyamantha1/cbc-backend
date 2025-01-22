@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { FaEdit, FaPlus, FaTrashAlt } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import toast, { Toaster } from 'react-hot-toast';
  
 
@@ -22,6 +22,8 @@ export default function AdminProductPage() {
         console.error("Error fetching products:", error);
       });}
   }, [productsLoaded]);
+
+  const navigate = useNavigate();
 
   return (
     <div className="p-8">
@@ -57,7 +59,10 @@ export default function AdminProductPage() {
                   {/* Edit Button */}
                   <button
                     className="flex items-center gap-1 px-3 py-1 text-blue-600 border border-blue-600 rounded-lg hover:bg-blue-600 hover:text-white"
-                    onClick={() => console.log("Edit", product.productId)}
+                    onClick={() =>{
+                      navigate("/admin/products/editProducts", { state: { product: product } });
+
+                     }}
                   >
                     <FaEdit /> Edit
                   </button>

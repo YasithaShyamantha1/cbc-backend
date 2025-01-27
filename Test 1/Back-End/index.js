@@ -48,8 +48,8 @@ app.use((req, res, next) => {
 });
 
 app.use("/User", userRouter);
-app.use("/product",productRouter);
-app.use("/order",orderRouter);
+app.use("/products", productRouter);
+app.use("/order", orderRouter);
 app.listen(5000, () => {
     console.log("Server is running on port 5000!");
 });

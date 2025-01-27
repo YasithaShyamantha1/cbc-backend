@@ -12,7 +12,7 @@ export default function AdminProductPage() {
   useEffect(() => {
     if(!productsLoaded){
       axios
-      .get("http://localhost:5000/product")
+      .get("http://localhost:5000/products")
       .then((res) => {
         console.log("API Response:", res.data);
         setProducts(res.data);

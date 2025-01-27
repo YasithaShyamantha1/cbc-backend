@@ -7,6 +7,8 @@ import SignUpPage from './pages/signUpPage';
 import AdminHomePage from './pages/adminHomePage';
 
 
+
+
 // Ensure this component exists and is correctly imported
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
@@ -22,10 +24,11 @@ function App() {
   reverseOrder={false}
 />
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route path="/*" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/admin/*" element={<AdminHomePage />} />
+
         {/* <Route path="*" element={<h1>404 Not Found</h1>} /> */}
       </Routes>
     </BrowserRouter>

@@ -87,6 +87,7 @@ const EditProductForm = () => {
         <div className="mb-4">
           <label htmlFor="productName" className="block text-gray-700">Product ID</label>
           <input
+          disabled
             type="text"
             id="productId"
             value={productId}

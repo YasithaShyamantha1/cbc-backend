@@ -3,6 +3,7 @@ import Header from "../components/Header";
 import LoginPage from './loginPage';
 import ProductOverview from './homePages/productOverview';
 import ProductPage from "./homePages/Product";
+import Cart from "./homePages/cartPage";
 //import LoginPage from "./loginPage";
 
 
@@ -16,6 +17,7 @@ export default function HomePage() {
                 <Route path="/productInfo/:id" element={<ProductOverview/>} />
                 <Route path="/login" element={<LoginPage/>} />
                 <Route path="/product" element={<ProductPage/>} />
+                <Route path="/cart" element={<Cart/>} />
                 </Routes>
             </div>
         </div> 

@@ -1,6 +1,7 @@
 import axios from "axios"
 import { useEffect,useState } from "react"
 import toast from "react-hot-toast"
+import ProductCard from "../../components/productCard"
 
 export default function ProductPage(){
     const [products, setProducts]=useState([])
@@ -25,9 +26,13 @@ export default function ProductPage(){
     }
     )
     return(
-        <div>
+        <div className="w-full h-full bg-white-600 overflow-y-scroll flex flex-wrap justify-center">
+       { products.map(
             
-    
-        </div>
+            (product)=>
+            <ProductCard product={product}/>
+        )}
+          </div>
+          
     )
 }

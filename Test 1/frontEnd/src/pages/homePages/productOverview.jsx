@@ -3,9 +3,8 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import ProductNotFound from "./productNotFound";
 import ImageSlider from "../../components/imageSlider";
-
-// import { addToCart } from "../../utils/cartFunction";
-// import toast from "react-hot-toast";
+import { addToCart } from "../../utils/cartFunction";
+import toast from "react-hot-toast";
 
 
 export default function ProductOverview() {
@@ -35,7 +34,10 @@ useEffect(() => {
     });
 }, [id]);
 
-
+function onAddtoCartClick(){
+  addToCart(product.productId,1)
+  toast.success(product.productId+"Added to Cart")
+}
 
 
 
@@ -69,7 +71,7 @@ useEffect(() => {
             <span className="line-through text-red-500">LKR.{product.price}</span>
             } <span>{"LKR."+product.lastPrice}</span></p>
             <p className="text-lg text-gray-600 line-clamp-3">{product.description}</p>
-            {/* <button onClick={onAddtoCartClick} className="bg-accent text-white p-2 rounded-lg">Add to cart</button> */}
+            <button onClick={onAddtoCartClick} className="bg-accent text-white p-2 rounded-lg">Add to cart</button>
           </div>
         </div>
         

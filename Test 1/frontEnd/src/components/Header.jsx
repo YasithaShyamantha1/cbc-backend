@@ -7,9 +7,10 @@ export default function Header(){
 <div className="h-full flex items-center w-[500px] justify-evenly">
 
             <Link to="/" className="text-accent font-bold text-xl hover:border-b border-accent">Home</Link>
-            <Link to="/" className="text-accent font-bold text-xl hover:border-b border-accent">Products</Link>
+            <Link to="/product" className="text-accent font-bold text-xl hover:border-b border-accent">Products</Link>
             <Link to="/" className="text-accent font-bold text-xl hover:border-b border-accent">About Us</Link>
             <Link to="/" className="text-accent font-bold text-xl hover:border-b border-accent">Contact Us</Link>
+            <Link to="/cart" className="text-accent font-bold text-xl hover:border-b border-accent">Cart</Link>
             </div>    
         </header>
     )

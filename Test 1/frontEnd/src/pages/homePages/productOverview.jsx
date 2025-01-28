@@ -52,14 +52,14 @@ function onAddtoCartClick(){
 
           </div>
         )
-      }
+      }  
       {
         status == "not Found" && (
           <ProductNotFound/>
         )
       }
        {status == "found"&&(
-        <div className="w-full h-full flex items-center justify-center">
+        <div className="w-full h-full flex flex-col items-center justify-center  lg:flex-row">
           <div className="w-[35%] h-full">
             <ImageSlider images={product.images}/>
           </div>

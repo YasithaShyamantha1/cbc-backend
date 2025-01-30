@@ -60,7 +60,7 @@ const EditProductForm = () => {
 
     try {
       const response = await axios.put(
-        `http://localhost:5000/product/${productId}`,
+        `http://localhost:5000/products/${productId}`,
         updatedProduct,
         {
           headers: { Authorization: `Bearer ${token}` },

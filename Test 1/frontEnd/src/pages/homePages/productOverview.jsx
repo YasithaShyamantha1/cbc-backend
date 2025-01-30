@@ -5,12 +5,15 @@ import ProductNotFound from "./productNotFound";
 import ImageSlider from "../../components/imageSlider";
 import { addToCart } from "../../utils/cartFunction";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+
 
 export default function ProductOverview() {
   const { id } = useParams();
   const productId = id;
   const [product, setProduct] = useState(null);
-  const [status, setStatus] = useState("loading"); // found, notfound, loading
+  const [status, setStatus] = useState("loading");
+  const  navigate = useNavigate();// found, notfound, loading
   console.log(id);
 
   useEffect(() => {
@@ -34,6 +37,18 @@ export default function ProductOverview() {
   function onAddtoCartClick() {
     addToCart(product.productId, 1);
     toast.success(product.productId + " Added to Cart");
+  }
+  function onBuyNowClick(){
+    navigate("/shipping",{
+      state:{
+        items: [
+          {
+            productId: product.productId,
+            qty: 1
+          }
+        ]
+      }
+    })
   }
 
   return (
@@ -79,8 +94,14 @@ export default function ProductOverview() {
               {product.description}
             </p>
             <button
+              onClick={onBuyNowClick}
+              className="bg-white text-accent border-1 border-accent shadow-gray-500 hover:shadow-primary  hover:border-[3px] py-2 px-4 rounded-lg w-full md:w-auto"
+            >
+             Buy Now
+            </button>
+            <button
               onClick={onAddtoCartClick}
-              className="bg-accent text-white py-2 px-4 rounded-lg w-full md:w-auto"
+              className="bg-accent text-white  shadow-gray-500 hover:shadow-primary  hover:border-[3px] py-2 px-4 rounded-lg w-full md:w-auto"
             >
               Add to cart
             </button>

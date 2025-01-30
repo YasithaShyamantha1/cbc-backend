@@ -4,6 +4,7 @@ import LoginPage from './loginPage';
 import ProductOverview from './homePages/productOverview';
 import ProductPage from "./homePages/Product";
 import Cart from "./homePages/cartPage";
+import ShippingPage from "./homePages/shipping";
 //import LoginPage from "./loginPage";
 
 
@@ -18,6 +19,7 @@ export default function HomePage() {
                 <Route path="/login" element={<LoginPage/>} />
                 <Route path="/product" element={<ProductPage/>} />
                 <Route path="/cart" element={<Cart/>} />
+                <Route path="/shipping" element={<ShippingPage/>} />
                 </Routes>
             </div>
         </div> 

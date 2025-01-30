@@ -14,7 +14,7 @@ export default function Cart() {
     setCart(loadCart());
     console.log(loadCart());
     axios
-      .post(import.meta.env.VITE_BACKEND_URL + "/orders/quote", {
+      .post(import.meta.env.VITE_BACKEND_URL + "/order/quote", {
         orderedItems: loadCart(),
       })
       .then((res) => {

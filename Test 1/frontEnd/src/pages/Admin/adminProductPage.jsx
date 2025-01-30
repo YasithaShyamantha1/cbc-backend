@@ -74,7 +74,7 @@ export default function AdminProductPage() {
                       alert(product.productId);
                       const token = localStorage.getItem("token");
                   
-                      axios.delete(`http://localhost:5000/product/${product.productId}`, {
+                      axios.delete(`http://localhost:5000/products/${product.productId}`, {
                           headers: {
                               Authorization: `Bearer ${token}`,
                           },

@@ -108,9 +108,9 @@ export async function googleLogin(req,res){
     //https://www.googleapis.com/oauth2/v3/userinfo
      try{
         const response = await axios.get("https://www.googleapis.com/oauth2/v3/userinfo",{
-            headers:{
-                Authentication: `Bearer ${token}`
-            }
+            // headers:{
+            //     Authentication: `Bearer ${token}`
+            // }
         })
         const email = response.data.email
     //check if user exists
@@ -167,3 +167,7 @@ export async function googleLogin(req,res){
 
 
 }
+
+
+//user@example1.com
+//securepassword123

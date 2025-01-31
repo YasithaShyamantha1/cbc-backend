@@ -22,7 +22,7 @@ export default function Cart() {
         console.log(res.data);
         if (res.data.total != null) {
           setTotal(res.data.total);
-          setLabeledTotal(res.data.total);
+          setLabeledTotal(res.data.labeledTotal);
         }
       });
   }, []);

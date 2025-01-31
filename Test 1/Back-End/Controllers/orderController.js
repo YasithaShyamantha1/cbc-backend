@@ -1,5 +1,7 @@
 import Order from "../Models/order.js";
 import { isCustomer } from "./userController.js";
+import Product from "../Models/product.js";  // Assuming you have a product model
+
 
 export async function createOrder(req, res) {
     // Check if the user is a customer
@@ -80,7 +82,8 @@ export async function createOrder(req, res) {
 
 export async function getOrders(req, res) {
     try {
-        const orders = await Order.find({ email: req.user.email });
+      const orders = await Order.find(); // Fetch all orders
+
         // Send the orders as response
         return res.json(orders);
     } catch (error) {
@@ -102,7 +105,7 @@ export async function getQuote(req, res) {
       console.log(req.body)
   
       for (let i = 0; i < newOrderData.orderedItems.length; i++) {
-        const product = await Product.findOne({
+        const product = await product.findOne({
           productId: newOrderData.orderedItems[i].productId,
         });
   

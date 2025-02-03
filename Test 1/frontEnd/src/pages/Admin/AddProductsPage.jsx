@@ -4,205 +4,185 @@ import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import UploadMediaToSupabase from "../../utils/mediaUpload";
-
-const key =`eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImllamphcGt0cHBwdWZjeHFoZ3F6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzY2NzU2MDEsImV4cCI6MjA1MjI1MTYwMX0.EN51cs6W3K9gh5TgkIN2q6DlwJq6cUlVeewd1HhMo_0
-`
-const url="https://iejjapktpppufcxqhgqz.supabase.co"
+import { motion } from "framer-motion";
 
 export default function AddProductForm() {
   const [productId, setProductId] = useState("");
   const [productName, setProductName] = useState("");
   const [alternativeNames, setAlternativeNames] = useState("");
   const [imageFiles, setImageFiles] = useState([]);
+  const [previewImages, setPreviewImages] = useState([]); // For previewing images
   const [price, setPrice] = useState("");
   const [lastPrice, setLastPrice] = useState("");
   const [stock, setStock] = useState("");
   const [description, setDescription] = useState("");
   const navigate = useNavigate();
 
-  // Helper function to upload images and get URLs
-  const getImageUrls = async () => {
-    const imageUrlsArray = [];
-    for (let i = 0; i < imageFiles.length; i++) {
-      const url = await UploadMediaToSupabase(imageFiles[i]); // Upload each file
-      imageUrlsArray.push(url); // Collect the URL
-      console.log(`Image ${i + 1} uploaded: ${url}`); // Log the uploaded URL
-    }
-    return imageUrlsArray;
+  // Handle image selection and preview
+  const handleImageChange = (e) => {
+    const files = Array.from(e.target.files);
+    setImageFiles(files);
+
+    // Generate preview URLs
+    const previewUrls = files.map((file) => URL.createObjectURL(file));
+    setPreviewImages(previewUrls);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const altNames = alternativeNames.split(",");
 
-    const altNames = alternativeNames.split(","); // Parse alternative names
-    console.log("Uploading images...");
-    const imgUrls = await getImageUrls(); // Collect uploaded image URLs
-    console.log("All images uploaded:", imgUrls);
+    toast.info("Uploading images...", { position: "top-right" });
+
+    const imgUrls = await Promise.all(
+      imageFiles.map((file) => UploadMediaToSupabase(file))
+    );
 
     const product = {
       productId,
       productName,
       altNames,
-      images: imgUrls, // Use uploaded URLs
+      images: imgUrls,
       price,
       lastPrice,
       stock,
       description,
     };
 
-    const token = localStorage.getItem("token");
-
     try {
-      const response = await axios.post("http://localhost:5000/products", product, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+      await axios.post("http://localhost:5000/products", product, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
 
       toast.success("Product added successfully!", { position: "top-right" });
 
-      // Clear form fields after successful submission
-      setProductId("");
-      setProductName("");
-      setAlternativeNames("");
-      setImageFiles([]);
-      setPrice("");
-      setLastPrice("");
-      setStock("");
-      setDescription("");
-
-      // Navigate to the admin/products page
-      setTimeout(() => {
-        navigate("/admin/products");
-      }, 2000); // Navigate after showing success toast
+      setTimeout(() => navigate("/admin/products"), 2000);
     } catch (error) {
-      console.error("Error adding product:", error);
-
-      if (error.response && error.response.status === 404) {
-        toast.error("API endpoint not found. Please check your backend server.", { position: "top-right" });
-      } else if (error.response && error.response.status === 401) {
-        toast.error("Unauthorized. Please check your authentication token.", { position: "top-right" });
-      } else {
-        toast.error("An error occurred while adding the product. Please try again.", { position: "top-right" });
-      }
+      toast.error("Failed to add product. Try again.", { position: "top-right" });
     }
   };
 
-  // Return UI
   return (
-    <div className="w-full max-w-xl mx-auto p-6 bg-white">
+    <motion.div
+      className="max-w-2xl mx-auto p-6 bg-white shadow-lg rounded-lg"
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.4 }}
+    >
       <ToastContainer />
-      <h2 className="text-2xl font-semibold mb-6">Add New Product</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="mb-4">
-          <label htmlFor="productId" className="block text-gray-700">Product ID</label>
+      <h2 className="text-3xl font-bold text-center text-gray-700 mb-6">
+        Add New Product
+      </h2>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Product ID */}
+        <motion.div whileFocus={{ scale: 1.02 }}>
+          <label className="block text-gray-600">Product ID</label>
           <input
             type="text"
-            id="productId"
             value={productId}
             onChange={(e) => setProductId(e.target.value)}
-            placeholder="Insert Product ID"
-            className="w-full p-2 border border-gray-300 rounded-md"
+            className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-400"
             required
           />
-        </div>
+        </motion.div>
 
-        <div className="mb-4">
-          <label htmlFor="productName" className="block text-gray-700">Product Name</label>
+        {/* Product Name */}
+        <motion.div whileFocus={{ scale: 1.02 }}>
+          <label className="block text-gray-600">Product Name</label>
           <input
             type="text"
-            id="productName"
             value={productName}
             onChange={(e) => setProductName(e.target.value)}
-            placeholder="Enter Product Name"
-            className="w-full p-2 border border-gray-300 rounded-md"
+            className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-400"
             required
           />
-        </div>
+        </motion.div>
 
-        <div className="mb-4">
-          <label htmlFor="alternativeNames" className="block text-gray-700">Alternative Names</label>
+        {/* Alternative Names */}
+        <motion.div whileFocus={{ scale: 1.02 }}>
+          <label className="block text-gray-600">Alternative Names</label>
           <input
             type="text"
-            id="alternativeNames"
             value={alternativeNames}
             onChange={(e) => setAlternativeNames(e.target.value)}
-            placeholder="Enter Alternative Names (comma separated)"
-            className="w-full p-2 border border-gray-300 rounded-md"
+            className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-400"
+            placeholder="Comma-separated values"
           />
-        </div>
+        </motion.div>
 
-        <div className="mb-4">
-          <label htmlFor="imageUrls" className="block text-gray-700">Product Images</label>
+        {/* Product Images */}
+        <motion.div>
+          <label className="block text-gray-600">Product Images</label>
           <input
             type="file"
-            id="imageUrls"
-            className="w-full p-2 border border-gray-300 rounded-md"
-            onChange={(e) => setImageFiles(Array.from(e.target.files))} // Handle multiple files
+            className="w-full p-2 border rounded-md"
+            onChange={handleImageChange}
             multiple
           />
-        </div>
+          <div className="mt-3 flex space-x-3">
+            {previewImages.map((src, index) => (
+              <img key={index} src={src} alt="Preview" className="w-16 h-16 rounded-md shadow-md" />
+            ))}
+          </div>
+        </motion.div>
 
-        <div className="mb-4">
-          <label htmlFor="price" className="block text-gray-700">Price</label>
+        {/* Price */}
+        <motion.div whileFocus={{ scale: 1.02 }}>
+          <label className="block text-gray-600">Price</label>
           <input
             type="number"
-            id="price"
             value={price}
             onChange={(e) => setPrice(e.target.value)}
-            placeholder="Enter Price"
-            className="w-full p-2 border border-gray-300 rounded-md"
+            className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-400"
             required
           />
-        </div>
+        </motion.div>
 
-        <div className="mb-4">
-          <label htmlFor="lastPrice" className="block text-gray-700">Last Price</label>
+        {/* Last Price */}
+        <motion.div whileFocus={{ scale: 1.02 }}>
+          <label className="block text-gray-600">Last Price</label>
           <input
             type="number"
-            id="lastPrice"
             value={lastPrice}
             onChange={(e) => setLastPrice(e.target.value)}
-            placeholder="Enter Last Price"
-            className="w-full p-2 border border-gray-300 rounded-md"
+            className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-400"
           />
-        </div>
+        </motion.div>
 
-        <div className="mb-4">
-          <label htmlFor="stock" className="block text-gray-700">Stock Quantity</label>
+        {/* Stock Quantity */}
+        <motion.div whileFocus={{ scale: 1.02 }}>
+          <label className="block text-gray-600">Stock Quantity</label>
           <input
             type="number"
-            id="stock"
             value={stock}
             onChange={(e) => setStock(e.target.value)}
-            placeholder="Enter Stock Quantity"
-            className="w-full p-2 border border-gray-300 rounded-md"
+            className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-400"
             required
           />
-        </div>
+        </motion.div>
 
-        <div className="mb-4">
-          <label htmlFor="description" className="block text-gray-700">Product Description</label>
+        {/* Description */}
+        <motion.div whileFocus={{ scale: 1.02 }}>
+          <label className="block text-gray-600">Product Description</label>
           <textarea
-            id="description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            placeholder="Enter Product Description"
-            className="w-full p-2 border border-gray-300 rounded-md"
+            className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-400"
             rows="4"
             required
           />
-        </div>
+        </motion.div>
 
-        <div className="flex justify-end">
+        {/* Submit Button */}
+        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
           <button
             type="submit"
-            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+            className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition-all"
           >
             Add Product
           </button>
-        </div>
+        </motion.div>
       </form>
-    </div>
+    </motion.div>
   );
 }

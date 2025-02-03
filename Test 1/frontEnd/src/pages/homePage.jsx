@@ -1,4 +1,4 @@
-import { Link, Routes, Route } from "react-router-dom"; // Added 'Route' to the import statement
+import { Routes, Route } from "react-router-dom";
 import Header from "../components/Header";
 import LoginPage from './loginPage';
 import ProductOverview from './homePages/productOverview';
@@ -6,25 +6,35 @@ import ProductPage from "./homePages/Product";
 import Cart from "./homePages/cartPage";
 import ShippingPage from "./homePages/shipping";
 import MyOrdersPage from "./homePages/orders";
-
-
-
+import AboutUsPage from "./homePages/AboutUsPage";
+import ImageSlider from "../components/ImageSlider";
+import Footer from "../components/Footer";
 
 export default function HomePage() {
+    const sliderImages = [
+        "/images/6.jpeg",
+        "/images/2.avif",
+        "/images/5.jpg",
+    ];
+
     return (
-        <div className="h-screen w-full">
+        <div className="h-screen w-full flex flex-col">
             <Header />
-            <div className="w-full h-[calc(100vh-100px)]">
+            
+            <div className="flex-grow">
                 <Routes> 
-                <Route path="/" element={<h1>Home Page</h1>} />
-                <Route path="/productInfo/:id" element={<ProductOverview/>} />
-                <Route path="/login" element={<LoginPage/>} />
-                <Route path="/product" element={<ProductPage/>} />
-                <Route path="/cart" element={<Cart/>} />
-                <Route path="/shipping" element={<ShippingPage/>} />
-                <Route path="/orders" element={<MyOrdersPage/>} />
+                    <Route path="/*" element={<ImageSlider images={sliderImages} />} />
+                    <Route path="/productInfo/:id" element={<ProductOverview />} />
+                    <Route path="/login" element={<LoginPage />} />
+                    <Route path="/product" element={<ProductPage />} />
+                    <Route path="/cart" element={<Cart />} />
+                    <Route path="/shipping" element={<ShippingPage />} />
+                    <Route path="/orders" element={<MyOrdersPage />} />
+                    <Route path="/about" element={<AboutUsPage />} />
                 </Routes>
             </div>
+
+            <Footer />
         </div> 
     );
 }

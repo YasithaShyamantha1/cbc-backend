@@ -63,12 +63,12 @@ export function deleteProduct(req, res) {
     })
 }
 export function updateProduct(req, res) {
-    // if (!isAdmin(req)) {
-    //     res.status(403).json({
-    //         message: "Please login as Administrator",
-    //     });
-    //     return;
-    // }
+    if (!isAdmin(req)) {
+        res.status(403).json({
+            message: "Please login as Administrator",
+        });
+        return;
+    }
 
     const productId = req.params.productId;
     const updatedData = req.body;

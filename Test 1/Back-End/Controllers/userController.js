@@ -1,13 +1,14 @@
 import User from "../Models/user.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-
+import dotenv from "dotenv";
+dotenv.config()
 export function createUser(req, res) {
     const newUserData = req.body;
 
     if(newUserData.type == "admin"){
         if(req.user==null){
-            res,json({
+            res.json({
                 message: "please login as administrator to create admin accounts"
             })
             return;
@@ -23,7 +24,7 @@ export function createUser(req, res) {
     // Hash password before saving
     newUserData.password = bcrypt.hashSync(newUserData.password, 10);
 
-    const user = new User(req.body);  // Use newUserData to avoid unwanted data
+    const user = new User(newUserData);  // Use newUserData to avoid unwanted data
 
     user.save().then(() => {
         res.json({
@@ -62,7 +63,7 @@ export function loginUser(req, res) {
                 user: {
                     firstName:user.firstName,
                     type:user.type,
-                    profilePicture:user.UserprofilePicture,
+                    profilePicture: user.profilePicture,
                     email : user.email
                     
                 }
@@ -80,17 +81,17 @@ export function loginUser(req, res) {
     });
 }
 
-// export function isAdmin(req){
-//     if(req.user==null){
-//         return false;
-//     }
+export function isAdmin(req){
+    if(req.user==null){
+        return false;
+    }
 
-//     if(req.user.type != "admin"){
-//         return false;
-//     }
+    if(req.user.type != "admin"){
+        return false;
+    }
 
-//     return true
-// }
+    return true
+}
 
 export function isCustomer(req){
     if(req.user==null){
@@ -103,71 +104,78 @@ export function isCustomer(req){
 
     return true
 }
-export async function googleLogin(req,res){
-    const token= req.body.token
-    //https://www.googleapis.com/oauth2/v3/userinfo
-     try{
-        const response = await axios.get("https://www.googleapis.com/oauth2/v3/userinfo",{
-            // headers:{
-            //     Authentication: `Bearer ${token}`
-            // }
-        })
-        const email = response.data.email
-    //check if user exists
-    const usersList = await User.find({email: email})
-    if(usersList.length >0){
-      const user = usersList[0]
-      const token = jwt.sign({
-        email : user.email,
-        firstName : user.firstName,
-        lastName : user.lastName,
-        isBlocked : user.isBlocked,
-        type : user.type,
-        profilePicture : user.profilePicture
-      } , process.env.SECRET)
-      res.json({
-        message: "User logged in",
-        token: token,
-        user : {
-          firstName : user.firstName,
-          lastName : user.lastName,
-          type : user.type,
-          profilePicture : user.profilePicture,
-          email : user.email
-        }
-      })
-    }else{
-      //create new user
-      const newUserData = {
-        email: email,
-        firstName: response.data.given_name,
-        lastName: response.data.family_name,
-        type: "customer",
-        password: "ffffff",
-        profilePicture: response.data.picture
+export async function googleLogin(req, res) {
+    const token = req.body.token;
+  
+    try {
+      const response = await axios.get("https://www.googleapis.com/oauth2/v3/userinfo", {
+        headers: {
+          Authorization: `Bearer ${token}`, // Fixed the header key here
+        },
+      });
+  
+      const { email, given_name, family_name, picture } = response.data;
+  
+      if (!email) {
+        return res.status(400).json({
+          message: "Invalid Google token",
+        });
       }
-      const user = new User(newUserData)
-      user.save().then(()=>{
-        res.json({
-          message: "User created"
-        })
-      }).catch((error)=>{
-        res.json({      
-          message: "User not created"
-        })
-      })
-
+  
+      // Check if user already exists
+      const existingUser = await User.findOne({ email: email });
+  
+      if (existingUser) {
+        const token = jwt.sign(
+          {
+            email: existingUser.email,
+            firstName: existingUser.firstName,
+            type: existingUser.type,
+            profilePicture: existingUser.profilePicture,
+          },
+          process.env.SECRET,
+          { expiresIn: "1d" }
+        );
+  
+        return res.status(200).json({
+          message: "User logged in",
+          token: token,
+          user: {
+            firstName: existingUser.firstName,
+            type: existingUser.type,
+            profilePicture: existingUser.profilePicture,
+            email: existingUser.email,
+          },
+        });
+      }
+  
+      // Create new user if not found
+      const newUser = new User({
+        email: email,
+        firstName: given_name,
+        lastName: family_name,
+        type: "user", // Default user type
+        password: bcrypt.hashSync("defaultPassword", 10), // Temporary password
+        profilePicture: picture,
+      });
+  
+      await newUser.save();
+  
+      res.status(201).json({
+        message: "user created",
+      });
+    } catch (error) {
+      console.error("Google Login Error:", error.message);
+      res.status(500).json({
+        message: "Google login failed",
+        error: error.message,
+      });
     }
-    
-  }catch(e){
-    res.json({
-      message: "Google login failed"
-    })
   }
 
 
-}
+//admin@gmail.com
+//pasword123
 
-
-//user@example1.com
-//securepassword123
+// user11@gmail.com
+// pasword123

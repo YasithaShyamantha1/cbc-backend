@@ -56,11 +56,11 @@ export default function ShippingPage() {
   function createOrder() {
     if (!validateInputs()) return;
 
-    // const token = localStorage.getItem("token");
-    // if (!token) {
-    //   toast.error("You must be logged in to place an order.");
-    //   return;
-    // }
+    const token = localStorage.getItem("token");
+    if (!token) {
+      toast.error("You must be logged in to place an order.");
+      return;
+    }
 
     axios
       .post(
@@ -71,11 +71,11 @@ export default function ShippingPage() {
           address,
           phone,
         },
-        // {
-        //   headers: {
-        //     Authorization: "Bearer " + token,
-        //   },
-        // }
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
       )
       .then((res) => {
         toast.success("Order placed successfully!");
@@ -126,38 +126,47 @@ export default function ShippingPage() {
         </div>
 
         <h2 className="text-xl font-bold mt-6 mb-4">Order Summary</h2>
-        <table className="w-full border-collapse border border-gray-300 mb-4">
-          <thead>
-            <tr className="bg-gray-200">
-              <th className="border border-gray-300 p-2">Image</th>
-              <th className="border border-gray-300 p-2">Product Name</th>
-              <th className="border border-gray-300 p-2">Product ID</th>
-              <th className="border border-gray-300 p-2">Qty</th>
-              <th className="border border-gray-300 p-2">Price</th>
-              <th className="border border-gray-300 p-2">Total</th>
-            </tr>
-          </thead>
-          <tbody>
-            {cart.map((item) => (
-              <CartCard
-                key={item.productId}
-                productId={item.productId}
-                qty={item.qty}
-              />
-            ))}
-          </tbody>
-        </table>
-        <h1 className="text-lg font-bold text-gray-700 mb-2">
+        
+        {/* Table Wrapper for Responsiveness */}
+        <div className="w-full overflow-x-auto">
+          <table className="table-fixed w-full border-collapse border border-gray-300 min-w-full">
+            <thead>
+              <tr className="bg-gray-200 text-gray-800">
+                <th className="border border-gray-300 p-2 w-16">Image</th>
+                <th className="border border-gray-300 p-2 w-1/3">Product Name</th>
+                <th className="border border-gray-300 p-2 w-1/5">Product ID</th>
+                <th className="border border-gray-300 p-2 w-1/12">Qty</th>
+                <th className="border border-gray-300 p-2 w-1/6">Price</th>
+                <th className="border border-gray-300 p-2 w-1/6">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              {cart.map((item) => (
+                <CartCard
+                  key={item.productId}
+                  productId={item.productId}
+                  qty={item.qty}
+                  price={item.price}
+                />
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        {/* Order Total Summary */}
+        <h1 className="text-lg font-bold text-gray-700 mt-4">
           Total: LKR. {labeledTotal.toFixed(2)}
         </h1>
-        <h1 className="text-lg font-bold text-gray-700 mb-2">
+        <h1 className="text-lg font-bold text-gray-700">
           Discount: LKR. {(labeledTotal - total).toFixed(2)}
         </h1>
         <h1 className="text-lg font-bold text-gray-700 mb-4">
           Grand Total: LKR. {total.toFixed(2)}
         </h1>
+
+        {/* Checkout Button with Updated Color */}
         <button
-          className="bg-blue-600 hover:bg-blue-500 text-white py-2 px-4 rounded-lg w-full"
+          className="bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-lg w-full"
           onClick={createOrder}
         >
           Checkout

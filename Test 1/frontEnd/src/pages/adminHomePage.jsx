@@ -4,6 +4,7 @@ import AdminProductPage from './Admin/adminProductPage';
 import AddProductForm from './Admin/AddProductsPage';
 import EditProductForm from './Admin/EditProductPage';
 import AdminOrdersPage from './Admin/AdminOrders';
+import AdminDashboard from './Admin/AdminDashboard';
 
 export default function AdminHomePage() {
   return (
@@ -41,12 +42,13 @@ export default function AdminHomePage() {
       <div className="w-3/4 h-screen bg-gray-100 p-6">
         <Routes>
           <Route path="/" element={<h1 className="text-3xl flex justify-center font-bold text-[#D8AE7E]">Welcome to the Admin Dashboard</h1>} />
-          <Route path="/dashboard" element={<h1>Dashboard</h1>} />
           <Route path="/products" element={<AdminProductPage />} />
           <Route path="/products/addProducts" element={<AddProductForm />} />
           <Route path="/products/editProducts" element={<EditProductForm />} />
           <Route path="/orders" element={<AdminOrdersPage />} />
           <Route path="/customers" element={<h1>Customers</h1>} />
+          <Route path="/dashboard" element={<AdminDashboard/>} />
+
         </Routes>
       </div>
     </div>

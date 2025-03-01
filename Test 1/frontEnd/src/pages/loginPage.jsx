@@ -11,7 +11,7 @@ export default function LoginPage() {
   const googleLogin = useGoogleLogin({
     onSuccess: (res) => {
       console.log(res);
-      axios.post (import.meta.env.VITE_BACKEND_URL+"/user/google",{
+      axios.post (import.meta.env.VITE_BACKEND_URL+"/user/googleLogin",{
         token : res.access_token
       }).then((res)=>{
         if(res.data.message == "user created"){

@@ -79,33 +79,35 @@ export default function MyOrdersPage() {
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="w-full max-w-5xl bg-white shadow-lg rounded-lg overflow-hidden"
+          className="w-full max-w-5xl bg-white shadow-md rounded-lg overflow-hidden"
         >
-          <table className="w-full border-collapse text-left">
-            <thead className="bg-gradient-to-r from-blue-500 to-purple-500 text-white">
-              <tr>
-                <th className="p-4">Order ID</th>
-                <th className="p-4">Status</th>
-                <th className="p-4">Date</th>
-                <th className="p-4">Total</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-200">
-              {orders.map((order) => (
-                <motion.tr
-                  key={order.orderId}
-                  className="hover:bg-gray-50 cursor-pointer transition-all"
-                  whileHover={{ scale: 1.02 }}
-                  onClick={() => { setSelectedOrder(order); setUpdatedStatus(order.status || "Pending"); }}
-                >
-                  <td className="p-4">{order.orderId}</td>
-                  <td className="p-4 font-semibold text-blue-600">{order.status || "Pending"}</td>
-                  <td className="p-4">{order.date ? new Date(order.date).toLocaleDateString() : "N/A"}</td>
-                  <td className="p-4 font-semibold text-green-600">LKR {calculateTotal(order.orderedItems).toFixed(2)}</td>
-                </motion.tr>
-              ))}
-            </tbody>
-          </table>
+          <div className="overflow-x-auto">
+            <table className="table-fixed w-full border-collapse border border-gray-300">
+              <thead className="bg-gray-200 text-gray-800">
+                <tr>
+                  <th className="border border-gray-300 p-2 w-1/5">Order ID</th>
+                  <th className="border border-gray-300 p-2 w-1/4">Status</th>
+                  <th className="border border-gray-300 p-2 w-1/5">Date</th>
+                  <th className="border border-gray-300 p-2 w-1/5">Total</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-200">
+                {orders.map((order) => (
+                  <motion.tr
+                    key={order.orderId}
+                    className="hover:bg-gray-100 cursor-pointer transition-all"
+                    whileHover={{ scale: 1.02 }}
+                    onClick={() => { setSelectedOrder(order); setUpdatedStatus(order.status || "Pending"); }}
+                  >
+                    <td className="p-3 border border-gray-300">{order.orderId}</td>
+                    <td className="p-3 border border-gray-300 font-semibold text-blue-600">{order.status || "Pending"}</td>
+                    <td className="p-3 border border-gray-300">{order.date ? new Date(order.date).toLocaleDateString() : "N/A"}</td>
+                    <td className="p-3 border border-gray-300 font-semibold text-green-600">LKR {calculateTotal(order.orderedItems).toFixed(2)}</td>
+                  </motion.tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </motion.div>
       )}
 
@@ -137,14 +139,14 @@ export default function MyOrdersPage() {
               <div className="flex justify-end mt-4 space-x-4">
                 <motion.button
                   whileHover={{ scale: 1.05 }}
-                  className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+                  className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700"
                   onClick={handleUpdateOrder}
                 >
                   Update
                 </motion.button>
                 <motion.button
                   whileHover={{ scale: 1.05 }}
-                  className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
+                  className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600"
                   onClick={() => setSelectedOrder(null)}
                 >
                   Close

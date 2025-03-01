@@ -13,8 +13,8 @@ import Footer from "../components/Footer";
 export default function HomePage() {
     const sliderImages = [
         "/images/6.jpeg",
-        "/images/2.avif",
-        "/images/5.jpg",
+        "/images/7.jpeg",
+        "/images/8.webp",
     ];
 
     return (

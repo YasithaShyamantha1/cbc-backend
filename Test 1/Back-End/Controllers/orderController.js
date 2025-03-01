@@ -147,11 +147,11 @@ export async function getQuote(req, res) {
   }
   
   export async function updateOrder(req, res) {
-    // if (!isAdmin(req)) {
-    //   res.json({
-    //     message: "Please login as admin to update orders",
-    //   });
-    // }
+    if (!isAdmin(req)) {
+      res.json({
+        message: "Please login as admin to update orders",
+      });
+    }
     
     try {
       const orderId = req.params.orderId;

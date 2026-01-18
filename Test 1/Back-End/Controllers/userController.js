@@ -1,6 +1,7 @@
 import User from "../Models/user.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import axios from "axios";
 import dotenv from "dotenv";
 dotenv.config()
 export function createUser(req, res) {
@@ -105,12 +106,12 @@ export function isCustomer(req){
     return true
 }
 export async function googleLogin(req, res) {
-    const token = req.body.token;
+    const googleToken = req.body.token;
   
     try {
       const response = await axios.get("https://www.googleapis.com/oauth2/v3/userinfo", {
         headers: {
-          Authorization: `Bearer ${token}`, // Fixed the header key here
+          Authorization: `Bearer ${googleToken}`,
         },
       });
   
@@ -126,7 +127,7 @@ export async function googleLogin(req, res) {
       const existingUser = await User.findOne({ email: email });
   
       if (existingUser) {
-        const token = jwt.sign(
+        const jwtToken = jwt.sign(
           {
             email: existingUser.email,
             firstName: existingUser.firstName,
@@ -139,7 +140,7 @@ export async function googleLogin(req, res) {
   
         return res.status(200).json({
           message: "User logged in",
-          token: token,
+          token: jwtToken,
           user: {
             firstName: existingUser.firstName,
             type: existingUser.type,
@@ -161,8 +162,26 @@ export async function googleLogin(req, res) {
   
       await newUser.save();
   
+      const jwtToken = jwt.sign(
+        {
+          email: newUser.email,
+          firstName: newUser.firstName,
+          type: newUser.type,
+          profilePicture: newUser.profilePicture,
+        },
+        process.env.SECRET,
+        { expiresIn: "1d" }
+      );
+  
       res.status(201).json({
         message: "user created",
+        token: jwtToken,
+        user: {
+          firstName: newUser.firstName,
+          type: newUser.type,
+          profilePicture: newUser.profilePicture,
+          email: newUser.email,
+        },
       });
     } catch (error) {
       console.error("Google Login Error:", error.message);

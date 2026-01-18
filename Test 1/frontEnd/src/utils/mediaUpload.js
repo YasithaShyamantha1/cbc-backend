@@ -1,34 +1,36 @@
-import { createClient } from "@supabase/supabase-js"
+// Cloudinary Configuration
+const CLOUD_NAME = "dekxsr071";
+const UPLOAD_PRESET = "Products";
 
-const key =`eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImllamphcGt0cHBwdWZjeHFoZ3F6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzY2NzU2MDEsImV4cCI6MjA1MjI1MTYwMX0.EN51cs6W3K9gh5TgkIN2q6DlwJq6cUlVeewd1HhMo_0
-`
-const url="https://iejjapktpppufcxqhgqz.supabase.co"
-
-export default function UploadMediaToSupabase(file){
-
+export default function UploadMediaToSupabase(file) {
     return new Promise((resolve, reject) => {
-        if(file == null){
-            reject("file not added")
+        if (file == null) {
+            reject("file not added");
+            return;
         }
-        let fileName = file.name
-        const extension = fileName.split(".")[fileName.split(".").length-1]
 
-        const supabase= createClient(url,key)
-        const timestamp = new Date().getTime()
-        fileName = timestamp + fileName + "." + extension
+        // Create form data
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("upload_preset", UPLOAD_PRESET);
 
-        supabase.storage.from("images").upload(fileName,file,{
-            cacheControl: "3600",
-            upsert : false
-        }).then(() => {
-            const { publicUrl } = supabase.storage.from("images").getPublicUrl(fileName).data;
-
-            resolve(publicUrl);
-        }).catch((err)=>{
+        // Upload to Cloudinary
+        fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, {
+            method: "POST",
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.secure_url) {
+                resolve(data.secure_url);
+            } else {
+                reject("Upload failed: No URL returned");
+            }
+        })
+        .catch((err) => {
             reject(err);
         });
-    })
-
+    });
 }
 
 

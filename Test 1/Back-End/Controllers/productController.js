@@ -5,11 +5,11 @@ function isAdmin(req) {
 
 
 export function createProduct(req, res) {
-    if (isAdmin(req)) {
-        res.json({
+    if (!isAdmin(req)) {
+        res.status(403).json({
             message: "Please login as Admin to add products"
-        })
-        return
+        });
+        return;
 
     }
     const newProductData = req.body
@@ -41,7 +41,7 @@ export function getProduct(req, res) {
 }
 
 export function deleteProduct(req, res) {
-    if (isAdmin(req)) {
+    if (!isAdmin(req)) {
         res.status(403).json({
             message: "please login as Administrator"
         })

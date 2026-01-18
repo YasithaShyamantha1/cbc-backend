@@ -11,21 +11,18 @@ export default function LoginPage() {
   const googleLogin = useGoogleLogin({
     onSuccess: (res) => {
       console.log(res);
-      axios.post (import.meta.env.VITE_BACKEND_URL+"/user/googleLogin",{
+      axios.post (import.meta.env.VITE_BACKEND_URL+"/user/google",{
         token : res.access_token
       }).then((res)=>{
-        if(res.data.message == "user created"){
-          toast.success("Account is created")
-        }
-        else{
-          localStorage.setItem("token",res.data.token)
+        if(res.data.token){
+          localStorage.setItem("token", res.data.token);
+          localStorage.setItem("user", JSON.stringify(res.data.user));
           if(res.data.user.type == "admin"){
-            window.location.href = "/admin"
+            window.location.href = "/admin";
           }else{
-            window.location.href = "/"
+            window.location.href = "/";
           }
         }
-      
       })
       toast.success("Google login successful!");
     },
@@ -51,13 +48,12 @@ export default function LoginPage() {
 
       const data = response.data;
 
-      if (!data.user) {
-        throw new Error("Invalid username or password.");
+      if (!data.token) {
+        throw new Error(data.message || "Invalid username or password.");
       }
 
       localStorage.setItem("token", data.token);
-
-      toast.success("Login successful!");
+      localStorage.setItem("user", JSON.stringify(data.user));
 
       if (data.user.type === "admin") {
         window.location.href = "/admin";

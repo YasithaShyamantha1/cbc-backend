@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   FaHome,
   FaShoppingBag,
@@ -6,11 +6,33 @@ import {
   FaBars,
   FaShoppingCart,
   FaUser,
+  FaSignOutAlt,
 } from "react-icons/fa";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Check if user is logged in
+    const token = localStorage.getItem("token");
+    if (token) {
+      const userStr = localStorage.getItem("user");
+      if (userStr) {
+        const userData = JSON.parse(userStr);
+        setUser(userData);
+      }
+    }
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    setUser(null);
+    navigate("/login");
+  };
 
   return (
     <header className="bg-white w-full h-[120px] shadow-xl">
@@ -47,17 +69,35 @@ export default function Header() {
           ))}
         </nav>
 
-        {/* Cart and Login */}
+        {/* Cart and Login/User */}
         <div className="flex items-center space-x-6">
           <Link to="/cart" className="text-[#ab825b] text-2xl relative hover:text-[#6a4d3d]">
             <FaShoppingCart />
           </Link>
-          <Link
-            to="/login"
-            className="bg-[#ab825b] text-white py-2 px-6 rounded-lg text-lg transition-transform duration-300 hover:bg-[#6a4d3d]"
-          >
-            Login
-          </Link>
+          
+          {user ? (
+            <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-2">
+                <FaUser className="text-[#ab825b] text-lg" />
+                <span className="text-[#ab825b] font-bold text-lg">{user.firstName}</span>
+              </div>
+              <button
+                onClick={handleLogout}
+                className="bg-red-500 text-white py-2 px-4 rounded-lg text-sm transition-transform duration-300 hover:bg-red-600 flex items-center space-x-2"
+              >
+                <FaSignOutAlt />
+                <span>Logout</span>
+              </button>
+            </div>
+          ) : (
+            <Link
+              to="/login"
+              className="bg-[#ab825b] text-white py-2 px-6 rounded-lg text-lg transition-transform duration-300 hover:bg-[#6a4d3d]"
+            >
+              Login
+            </Link>
+          )}
+          
           <button
             className="lg:hidden text-[#ab825b] text-3xl"
             onClick={() => setMenuOpen(!menuOpen)}

@@ -14,6 +14,9 @@ dotenv.config();
 const port = process.env.PORT;
 const mongoUrl = process.env.MONGO_DB_URI;
 
+console.log("Port:", port);
+console.log("MongoDB URL:", mongoUrl);
+
 app.use(cors())
 
 app.use((req, res, next) => {

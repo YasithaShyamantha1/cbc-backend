@@ -10,20 +10,30 @@ export function createProduct(req, res) {
             message: "Please login as Admin to add products"
         });
         return;
-
     }
-    const newProductData = req.body
 
-    const product = new Product(newProductData)
+    const newProductData = req.body;
+    
+    console.log("Received product data:", newProductData);
 
-    //console.log(req.user)
-    // const product = new Product(req.body)
+    // Validate required fields
+    if (!newProductData.productId || !newProductData.productName) {
+        res.status(400).json({
+            message: "Product ID and Product Name are required"
+        });
+        return;
+    }
+
+    const product = new Product(newProductData);
+
     product.save().then(() => {
         res.json({
-            message: "Product Created"
-        })
+            message: "Product Created",
+            product: product
+        });
     }).catch((error) => {
-        res.json({
+        console.error("Error saving product:", error);
+        res.status(500).json({
             message: error.message,
         });
     });

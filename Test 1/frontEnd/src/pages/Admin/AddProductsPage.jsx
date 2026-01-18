@@ -30,26 +30,36 @@ export default function AddProductForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const altNames = alternativeNames.split(",");
+    
+    // Validation
+    if (imageFiles.length === 0) {
+      toast.error("Please select at least one image", { position: "top-right" });
+      return;
+    }
+
+    const altNames = alternativeNames.split(",").map(name => name.trim()).filter(name => name);
 
     toast.info("Uploading images...", { position: "top-right" });
 
-    const imgUrls = await Promise.all(
-      imageFiles.map((file) => UploadMediaToSupabase(file))
-    );
-
-    const product = {
-      productId,
-      productName,
-      altNames,
-      images: imgUrls,
-      price,
-      lastPrice,
-      stock,
-      description,
-    };
-
     try {
+      const imgUrls = await Promise.all(
+        imageFiles.map((file) => UploadMediaToSupabase(file))
+      );
+
+      // Convert string values to numbers
+      const product = {
+        productId: productId.trim(),
+        productName: productName.trim(),
+        altNames,
+        images: imgUrls,
+        price: parseFloat(price),
+        lastPrice: parseFloat(lastPrice),
+        stock: parseInt(stock),
+        description: description.trim(),
+      };
+
+      console.log("Sending product data:", product);
+
       await axios.post("http://localhost:5000/products", product, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
@@ -58,7 +68,11 @@ export default function AddProductForm() {
 
       setTimeout(() => navigate("/admin/products"), 2000);
     } catch (error) {
-      toast.error("Failed to add product. Try again.", { position: "top-right" });
+      console.error("Error adding product:", error);
+      toast.error(
+        error.response?.data?.message || "Failed to add product. Try again.", 
+        { position: "top-right" }
+      );
     }
   };
 
@@ -131,6 +145,8 @@ export default function AddProductForm() {
           <label className="block text-gray-600">Price</label>
           <input
             type="number"
+            step="0.01"
+            min="0"
             value={price}
             onChange={(e) => setPrice(e.target.value)}
             className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-400"
@@ -140,12 +156,15 @@ export default function AddProductForm() {
 
         {/* Last Price */}
         <motion.div whileFocus={{ scale: 1.02 }}>
-          <label className="block text-gray-600">Last Price</label>
+          <label className="block text-gray-600">Last Price (Current Price)</label>
           <input
             type="number"
+            step="0.01"
+            min="0"
             value={lastPrice}
             onChange={(e) => setLastPrice(e.target.value)}
             className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-400"
+            required
           />
         </motion.div>
 
@@ -154,6 +173,7 @@ export default function AddProductForm() {
           <label className="block text-gray-600">Stock Quantity</label>
           <input
             type="number"
+            min="0"
             value={stock}
             onChange={(e) => setStock(e.target.value)}
             className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-400"

@@ -7,6 +7,8 @@ import {
   FaShoppingCart,
   FaUser,
   FaSignOutAlt,
+  FaUserShield,
+  FaTimes,
 } from "react-icons/fa";
 import { useState, useEffect } from "react";
 
@@ -35,103 +37,179 @@ export default function Header() {
   };
 
   return (
-    <header className="bg-white w-full h-[120px] shadow-xl">
+    <header className="bg-gradient-to-r from-white via-amber-50 to-white w-full shadow-2xl sticky top-0 z-50 border-b-4 border-[#ab825b]">
       <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
         {/* Logo and Title */}
         <div className="flex items-center space-x-4">
           <img
             src="/logo.png"
             alt="Logo"
-            className="cursor-pointer w-[120px] h-[120px] rounded-full transform transition-transform duration-300 hover:scale-110"
+            className="cursor-pointer w-[100px] h-[100px] rounded-full transform transition-all duration-500 hover:scale-110 hover:rotate-6 shadow-lg border-4 border-[#ab825b]"
           />
           <Link
             to="/"
-            className="text-[#ab825b] text-3xl font-semibold transition-transform duration-300 hover:text-[#6a4d3d]"
+            className="text-[#ab825b] text-3xl font-bold tracking-wide transition-all duration-300 hover:text-[#8b6a4a] hover:scale-105"
           >
             CRYSTAL BEAUTY
           </Link>
         </div>
 
         {/* Desktop Navigation */}
-        <nav className="hidden lg:flex space-x-10">
-          {[{ path: "/", label: "Home", Icon: FaHome },
+        <nav className="hidden lg:flex space-x-2">
+          {[
+            { path: "/", label: "Home", Icon: FaHome },
             { path: "/product", label: "Products", Icon: FaShoppingBag },
-            { path: "/trending", label: "Trending" },
+            { path: "/trending", label: "Trending", Icon: null },
             { path: "/about", label: "About Us", Icon: FaInfoCircle },
           ].map(({ path, label, Icon }) => (
             <Link
               key={label}
               to={path}
-              className="flex items-center text-[#ab825b] font-bold text-lg transition-all duration-300 hover:text-[#6a4d3d] hover:border-b-2 hover:border-[#ab825b]"
+              className="flex items-center gap-2 px-5 py-3 text-[#ab825b] font-semibold text-base rounded-lg transition-all duration-300 hover:bg-[#ab825b] hover:text-white hover:shadow-lg hover:scale-105 border-2 border-transparent hover:border-[#8b6a4a]"
             >
-              {Icon && <Icon className="mr-2 text-xl" />} {label}
+              {Icon && <Icon className="text-lg" />} 
+              <span>{label}</span>
             </Link>
           ))}
         </nav>
 
-        {/* Cart and Login/User */}
-        <div className="flex items-center space-x-6">
-          <Link to="/cart" className="text-[#ab825b] text-2xl relative hover:text-[#6a4d3d]">
-            <FaShoppingCart />
+        {/* Cart and User Actions */}
+        <div className="flex items-center space-x-3">
+          {/* Cart Button */}
+          <Link 
+            to="/cart" 
+            className="p-3 rounded-full bg-gradient-to-br from-[#ab825b] to-[#8b6a4a] text-white shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-300 relative group"
+          >
+            <FaShoppingCart className="text-xl" />
+            <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">0</span>
           </Link>
           
           {user ? (
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-3">
+              {/* Admin Dashboard Button */}
+              <Link
+                to="/admin"
+                className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-gradient-to-r from-[#ab825b] to-[#8b6a4a] text-white font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 border-2 border-[#6a4d3d]"
+              >
+                <FaUserShield className="text-lg" />
+                <span className="hidden xl:inline">Admin</span>
+              </Link>
+
+              {/* User Account Button */}
               <Link
                 to="/account"
-                className="flex items-center space-x-2 px-4 py-2 rounded-lg bg-[#ab825b] text-white font-bold hover:bg-[#6a4d3d] transition-all duration-300"
+                className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-gradient-to-r from-[#ab825b] to-[#8b6a4a] text-white font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
               >
                 <FaUser className="text-lg" />
-                <span>{user.firstName}</span>
+                <span className="hidden xl:inline">{user.firstName}</span>
               </Link>
+
+              {/* Logout Button */}
               <button
                 onClick={handleLogout}
-                className="bg-red-500 text-white py-2 px-4 rounded-lg text-sm transition-transform duration-300 hover:bg-red-600 flex items-center space-x-2"
+                className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-gradient-to-r from-[#c9965f] to-[#ab825b] text-white font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 hover:from-[#ab825b] hover:to-[#8b6a4a]"
               >
-                <FaSignOutAlt />
-                <span>Logout</span>
+                <FaSignOutAlt className="text-lg" />
+                <span className="hidden xl:inline">Logout</span>
               </button>
             </div>
           ) : (
             <Link
               to="/login"
-              className="bg-[#ab825b] text-white py-2 px-6 rounded-lg text-lg transition-transform duration-300 hover:bg-[#6a4d3d]"
+              className="px-6 py-3 rounded-lg bg-gradient-to-r from-[#ab825b] to-[#8b6a4a] text-white font-bold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 border-2 border-[#6a4d3d]"
             >
               Login
             </Link>
           )}
           
+          {/* Mobile Menu Button */}
           <button
-            className="lg:hidden text-[#ab825b] text-3xl"
+            className="lg:hidden p-3 rounded-lg bg-[#ab825b] text-white shadow-lg hover:bg-[#8b6a4a] transition-all duration-300"
             onClick={() => setMenuOpen(!menuOpen)}
           >
-            <FaBars />
+            <FaBars className="text-2xl" />
           </button>
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu Overlay */}
       {menuOpen && (
-        <div className="lg:hidden fixed inset-0 bg-black bg-opacity-50 z-40" onClick={() => setMenuOpen(false)}></div>
+        <div 
+          className="lg:hidden fixed inset-0 bg-black bg-opacity-60 z-40 backdrop-blur-sm" 
+          onClick={() => setMenuOpen(false)}
+        ></div>
       )}
 
+      {/* Mobile Menu Sidebar */}
       <div
-        className={`lg:hidden fixed top-0 right-0 w-3/4 h-full bg-white shadow-xl z-50 p-6 transform transition-transform duration-500 ${menuOpen ? "translate-x-0" : "translate-x-full"}`}
+        className={`lg:hidden fixed top-0 right-0 w-80 h-full bg-gradient-to-b from-white to-amber-50 shadow-2xl z-50 transform transition-transform duration-500 ${
+          menuOpen ? "translate-x-0" : "translate-x-full"
+        }`}
       >
-        {[{ path: "/", label: "Home", Icon: FaHome },
-          { path: "/product", label: "Products", Icon: FaShoppingBag },
-          { path: "/trending", label: "Trending" },
-          { path: "/about", label: "About Us", Icon: FaInfoCircle },
-        ].map(({ path, label, Icon }) => (
-          <Link
-            key={label}
-            to={path}
-            className="flex items-center text-[#ab825b] font-bold text-xl py-3 hover:text-[#6a4d3d]"
+        {/* Mobile Menu Header */}
+        <div className="flex items-center justify-between p-6 border-b-4 border-[#ab825b] bg-gradient-to-r from-[#ab825b] to-[#8b6a4a]">
+          <h2 className="text-white text-2xl font-bold">Menu</h2>
+          <button
             onClick={() => setMenuOpen(false)}
+            className="text-white text-3xl hover:rotate-90 transition-transform duration-300"
           >
-            {Icon && <Icon className="mr-2 text-xl" />} {label}
-          </Link>
-        ))}
+            <FaTimes />
+          </button>
+        </div>
+
+        {/* Mobile Menu Items */}
+        <div className="p-6 space-y-4">
+          {[
+            { path: "/", label: "Home", Icon: FaHome },
+            { path: "/product", label: "Products", Icon: FaShoppingBag },
+            { path: "/trending", label: "Trending", Icon: null },
+            { path: "/about", label: "About Us", Icon: FaInfoCircle },
+          ].map(({ path, label, Icon }) => (
+            <Link
+              key={label}
+              to={path}
+              className="flex items-center gap-3 text-[#ab825b] font-bold text-xl py-4 px-4 rounded-lg hover:bg-[#ab825b] hover:text-white transition-all duration-300 border-2 border-transparent hover:border-[#8b6a4a] hover:shadow-lg"
+              onClick={() => setMenuOpen(false)}
+            >
+              {Icon && <Icon className="text-2xl" />} 
+              <span>{label}</span>
+            </Link>
+          ))}
+
+          {/* Mobile User Section */}
+          {user && (
+            <div className="pt-4 border-t-2 border-[#ab825b] space-y-4">
+              <Link
+                to="/admin"
+                className="flex items-center gap-3 text-white font-bold text-lg py-4 px-4 rounded-lg bg-gradient-to-r from-[#ab825b] to-[#8b6a4a] shadow-lg hover:shadow-xl transition-all duration-300"
+                onClick={() => setMenuOpen(false)}
+              >
+                <FaUserShield className="text-2xl" />
+                <span>Admin Dashboard</span>
+              </Link>
+              
+              <Link
+                to="/account"
+                className="flex items-center gap-3 text-white font-bold text-lg py-4 px-4 rounded-lg bg-gradient-to-r from-[#ab825b] to-[#8b6a4a] shadow-lg hover:shadow-xl transition-all duration-300"
+                onClick={() => setMenuOpen(false)}
+              >
+                <FaUser className="text-2xl" />
+                <span>{user.firstName}'s Account</span>
+              </Link>
+              
+              <button
+                onClick={() => {
+                  handleLogout();
+                  setMenuOpen(false);
+                }}
+                className="w-full flex items-center gap-3 text-white font-bold text-lg py-4 px-4 rounded-lg bg-gradient-to-r from-[#c9965f] to-[#ab825b] shadow-lg hover:shadow-xl transition-all duration-300"
+              >
+                <FaSignOutAlt className="text-2xl" />
+                <span>Logout</span>
+              </button>
+            </div>
+          )}
+        </div>
       </div>
     </header>
   );

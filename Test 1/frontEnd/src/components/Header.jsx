@@ -37,14 +37,14 @@ export default function Header() {
   };
 
   return (
-    <header className="bg-gradient-to-r from-white via-amber-50 to-white w-full shadow-2xl sticky top-0 z-50 border-b-4 border-[#ab825b]">
+    <header className="bg-gradient-to-r from-white via-amber-50 to-white w-full shadow-2xl sticky top-0 z-50 border-b-2 border-[#ab825b] backdrop-blur-md bg-opacity-80">
       <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
         {/* Logo and Title */}
         <div className="flex items-center space-x-4">
           <img
             src="/logo.png"
             alt="Logo"
-            className="cursor-pointer w-[100px] h-[100px] rounded-full transform transition-all duration-500 hover:scale-110 hover:rotate-6 shadow-lg border-4 border-[#ab825b]"
+            className="cursor-pointer w-[90px] h-[90px] rounded-full transform transition-all duration-500 hover:scale-110 hover:rotate-6 shadow-xl border-2 border-[#ab825b] bg-white/70"
           />
           <Link
             to="/"
@@ -55,7 +55,7 @@ export default function Header() {
         </div>
 
         {/* Desktop Navigation */}
-        <nav className="hidden lg:flex space-x-2">
+        <nav className="hidden lg:flex space-x-4">
           {[
             { path: "/", label: "Home", Icon: FaHome },
             { path: "/product", label: "Products", Icon: FaShoppingBag },
@@ -65,10 +65,11 @@ export default function Header() {
             <Link
               key={label}
               to={path}
-              className="flex items-center gap-2 px-5 py-3 text-[#ab825b] font-semibold text-base rounded-lg transition-all duration-300 hover:bg-[#ab825b] hover:text-white hover:shadow-lg hover:scale-105 border-2 border-transparent hover:border-[#8b6a4a]"
+              className="flex items-center gap-2 px-6 py-3 text-[#ab825b] font-semibold text-lg rounded-full transition-all duration-300 hover:text-[#ab825b] hover:bg-white/80 hover:shadow-lg hover:scale-105 border-2 border-transparent hover:border-[#ab825b] relative group"
             >
               {Icon && <Icon className="text-lg" />} 
-              <span>{label}</span>
+              <span className="tracking-wide">{label}</span>
+              <span className="absolute left-1/2 -bottom-1 w-0 h-1 bg-gradient-to-r from-[#ab825b] to-[#8b6a4a] rounded-full group-hover:w-2/3 transition-all duration-300"></span>
             </Link>
           ))}
         </nav>
@@ -78,10 +79,10 @@ export default function Header() {
           {/* Cart Button */}
           <Link 
             to="/cart" 
-            className="p-3 rounded-full bg-gradient-to-br from-[#ab825b] to-[#8b6a4a] text-white shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-300 relative group"
+            className="p-3 rounded-full bg-gradient-to-br from-[#ab825b] to-[#8b6a4a] text-white shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-300 relative group border-2 border-[#ab825b]"
           >
             <FaShoppingCart className="text-xl" />
-            <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">0</span>
+            <span className="absolute -top-2 -right-2 bg-gradient-to-br from-[#ab825b] to-[#8b6a4a] text-white text-xs rounded-full w-6 h-6 flex items-center justify-center font-bold border-2 border-white shadow">0</span>
           </Link>
           
           {user ? (
@@ -89,7 +90,7 @@ export default function Header() {
               {/* Admin Dashboard Button */}
               <Link
                 to="/admin"
-                className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-gradient-to-r from-[#ab825b] to-[#8b6a4a] text-white font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 border-2 border-[#6a4d3d]"
+                className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-[#ab825b] to-[#8b6a4a] text-white font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 border-2 border-[#ab825b]"
               >
                 <FaUserShield className="text-lg" />
                 <span className="hidden xl:inline">Admin</span>
@@ -98,7 +99,7 @@ export default function Header() {
               {/* User Account Button */}
               <Link
                 to="/account"
-                className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-gradient-to-r from-[#ab825b] to-[#8b6a4a] text-white font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
+                className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-[#ab825b] to-[#8b6a4a] text-white font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 border-2 border-[#ab825b]"
               >
                 <FaUser className="text-lg" />
                 <span className="hidden xl:inline">{user.firstName}</span>
@@ -107,7 +108,7 @@ export default function Header() {
               {/* Logout Button */}
               <button
                 onClick={handleLogout}
-                className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-gradient-to-r from-[#c9965f] to-[#ab825b] text-white font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 hover:from-[#ab825b] hover:to-[#8b6a4a]"
+                className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-[#c9965f] to-[#ab825b] text-white font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 border-2 border-[#ab825b] hover:from-[#ab825b] hover:to-[#8b6a4a]"
               >
                 <FaSignOutAlt className="text-lg" />
                 <span className="hidden xl:inline">Logout</span>
@@ -116,7 +117,7 @@ export default function Header() {
           ) : (
             <Link
               to="/login"
-              className="px-6 py-3 rounded-lg bg-gradient-to-r from-[#ab825b] to-[#8b6a4a] text-white font-bold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 border-2 border-[#6a4d3d]"
+              className="px-7 py-3 rounded-full bg-gradient-to-r from-[#ab825b] to-[#8b6a4a] text-white font-bold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 border-2 border-[#ab825b]"
             >
               Login
             </Link>
@@ -124,7 +125,7 @@ export default function Header() {
           
           {/* Mobile Menu Button */}
           <button
-            className="lg:hidden p-3 rounded-lg bg-[#ab825b] text-white shadow-lg hover:bg-[#8b6a4a] transition-all duration-300"
+            className="lg:hidden p-3 rounded-full bg-[#ab825b] text-white shadow-lg hover:bg-[#8b6a4a] transition-all duration-300 border-2 border-[#ab825b]"
             onClick={() => setMenuOpen(!menuOpen)}
           >
             <FaBars className="text-2xl" />

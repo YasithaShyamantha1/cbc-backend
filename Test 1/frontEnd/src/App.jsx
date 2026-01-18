@@ -5,6 +5,7 @@ import LoginPage from './pages/loginPage';
 import HomePage from './pages/homePage';
 import SignUpPage from './pages/signUpPage';
 import AdminHomePage from './pages/adminHomePage';
+import AccountPage from './pages/accountPage';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 
 
@@ -30,6 +31,7 @@ function App() {
         <Route path="/*" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignUpPage />} />
+        <Route path="/account" element={<AccountPage />} />
         <Route path="/admin/*" element={<AdminHomePage />} />
 
         {/* <Route path="*" element={<h1>404 Not Found</h1>} /> */}

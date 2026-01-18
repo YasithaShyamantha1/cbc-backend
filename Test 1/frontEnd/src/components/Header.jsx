@@ -77,10 +77,13 @@ export default function Header() {
           
           {user ? (
             <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-2">
-                <FaUser className="text-[#ab825b] text-lg" />
-                <span className="text-[#ab825b] font-bold text-lg">{user.firstName}</span>
-              </div>
+              <Link
+                to="/account"
+                className="flex items-center space-x-2 px-4 py-2 rounded-lg bg-[#ab825b] text-white font-bold hover:bg-[#6a4d3d] transition-all duration-300"
+              >
+                <FaUser className="text-lg" />
+                <span>{user.firstName}</span>
+              </Link>
               <button
                 onClick={handleLogout}
                 className="bg-red-500 text-white py-2 px-4 rounded-lg text-sm transition-transform duration-300 hover:bg-red-600 flex items-center space-x-2"

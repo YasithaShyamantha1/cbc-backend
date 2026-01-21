@@ -38,9 +38,9 @@ export default function Header() {
 
   return (
     <header className="bg-gradient-to-r from-white via-amber-50 to-white w-full shadow-2xl sticky top-0 z-50 border-b-2 border-[#ab825b] backdrop-blur-md bg-opacity-80">
-      <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
+      <div className="flex items-center justify-between w-full py-4 px-4 md:px-8">
         {/* Logo and Title */}
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-4 pl-2 md:pl-4 justify-start">
           <img
             src="/logo.png"
             alt="Logo"
@@ -55,7 +55,7 @@ export default function Header() {
         </div>
 
         {/* Desktop Navigation */}
-        <nav className="hidden lg:flex space-x-4">
+        <nav className="hidden lg:flex gap-8 ml-8 pr-2 md:pr-4">
           {[
             { path: "/", label: "Home", Icon: FaHome },
             { path: "/product", label: "Products", Icon: FaShoppingBag },
@@ -65,11 +65,11 @@ export default function Header() {
             <Link
               key={label}
               to={path}
-              className="flex items-center gap-2 px-6 py-3 text-[#ab825b] font-semibold text-lg rounded-full transition-all duration-300 hover:text-[#ab825b] hover:bg-white/80 hover:shadow-lg hover:scale-105 border-2 border-transparent hover:border-[#ab825b] relative group"
+              className="header-nav-link flex items-center gap-2 px-6 py-3 text-[#ab825b] font-semibold text-lg rounded-full transition-all duration-300 hover:text-[#ab825b] hover:bg-white/80 hover:shadow-lg hover:scale-105 border-2 border-transparent hover:border-[#ab825b]"
+              style={{ textDecoration: 'none' }}
             >
               {Icon && <Icon className="text-lg" />} 
               <span className="tracking-wide">{label}</span>
-              <span className="absolute left-1/2 -bottom-1 w-0 h-1 bg-gradient-to-r from-[#ab825b] to-[#8b6a4a] rounded-full group-hover:w-2/3 transition-all duration-300"></span>
             </Link>
           ))}
         </nav>

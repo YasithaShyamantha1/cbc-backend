@@ -42,3 +42,18 @@ html, body {
 .read-the-docs {
   color: #888;
 }
+
+/* Header nav link improvements */
+.header-nav-link, .header-nav-link:visited {
+  text-decoration: none !important;
+}
+.header-nav-link:hover, .header-nav-link:focus {
+  text-decoration: none !important;
+}
+.header-nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 1.2rem;
+  box-shadow: none;
+}

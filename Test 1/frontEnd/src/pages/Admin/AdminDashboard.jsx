@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import axios from 'axios';
 import { Line } from 'react-chartjs-2';
@@ -47,6 +48,7 @@ const AdminDashboard = () => {
     }],
   };
 
+  const navigate = useNavigate();
   return (
     <motion.div 
       initial={{ opacity: 0 }} 
@@ -54,8 +56,15 @@ const AdminDashboard = () => {
       transition={{ duration: 0.5 }}
       className="flex flex-col lg:flex-row bg-gray-100 min-h-screen"
     >
-     
-
+      {/* Home Button styled for admin theme */}
+      <div className="p-6">
+        <button
+          className="bg-[#D8AE7E] text-white px-6 py-2 rounded-lg shadow hover:bg-[#b98e67] transition font-semibold"
+          onClick={() => navigate('/')}
+        >
+          Home
+        </button>
+      </div>
       <div className="lg:w-4/5 p-6">
         <div className="flex justify-between mb-8">
           <div>

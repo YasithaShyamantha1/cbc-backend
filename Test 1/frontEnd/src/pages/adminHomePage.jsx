@@ -8,47 +8,46 @@ import AdminDashboard from './Admin/AdminDashboard';
 
 export default function AdminHomePage() {
   return (
-    <div className="bg-[#D8AE7E] w-full h-screen flex">
+    <div className="min-h-screen w-full flex bg-gradient-to-br from-[#ffe0b5] via-[#fff7ed] to-[#fbeee6]">
       {/* Sidebar */}
-      <div className="w-1/4 h-screen bg-[#D8AE7E] flex flex-col items-center p-4 space-y-6">
-        <h1 className="text-white text-2xl font-bold">Admin Panel</h1>
+      <div className="w-64 min-h-screen bg-white/90 shadow-2xl rounded-tr-3xl rounded-br-3xl flex flex-col items-center p-6 m-4 mt-8 mb-8">
+        <h1 className="text-[#b8895a] text-3xl font-extrabold mb-10 tracking-tight drop-shadow-lg">Admin Panel</h1>
         <Link
           to="/admin/dashboard"
-          className="flex items-center text-white text-lg gap-2 hover:bg-[#b98e67] px-4 py-2 rounded w-full text-center"
+          className="flex items-center text-[#b8895a] text-lg gap-3 hover:bg-[#ffe0b5] hover:text-[#8b6a4a] px-5 py-3 rounded-full w-full mb-2 transition-all duration-200 font-semibold shadow-sm"
         >
-          <FaTachometerAlt /> Dashboard
+          <FaTachometerAlt className="text-xl" /> Dashboard
         </Link>
         <Link
           to="/admin/products"
-          className="flex items-center text-white text-lg gap-2 hover:bg-[#b98e67] px-4 py-2 rounded w-full text-center"
+          className="flex items-center text-[#b8895a] text-lg gap-3 hover:bg-[#ffe0b5] hover:text-[#8b6a4a] px-5 py-3 rounded-full w-full mb-2 transition-all duration-200 font-semibold shadow-sm"
         >
-          <FaBox /> Products
+          <FaBox className="text-xl" /> Products
         </Link>
         <Link
           to="/admin/orders"
-          className="flex items-center text-white text-lg gap-2 hover:bg-[#b98e67] px-4 py-2 rounded w-full text-center"
+          className="flex items-center text-[#b8895a] text-lg gap-3 hover:bg-[#ffe0b5] hover:text-[#8b6a4a] px-5 py-3 rounded-full w-full mb-2 transition-all duration-200 font-semibold shadow-sm"
         >
-          <FaShoppingCart /> Orders
+          <FaShoppingCart className="text-xl" /> Orders
         </Link>
         <Link
           to="/admin/customers"
-          className="flex items-center text-white text-lg gap-2 hover:bg-[#b98e67] px-4 py-2 rounded w-full text-center"
+          className="flex items-center text-[#b8895a] text-lg gap-3 hover:bg-[#ffe0b5] hover:text-[#8b6a4a] px-5 py-3 rounded-full w-full mb-2 transition-all duration-200 font-semibold shadow-sm"
         >
-          <FaUsers /> Customers
+          <FaUsers className="text-xl" /> Customers
         </Link>
       </div>
 
       {/* Main Content */}
-      <div className="w-3/4 h-screen bg-gray-100 p-6">
+      <div className="flex-1 min-h-screen p-8 flex flex-col">
         <Routes>
-          <Route path="/" element={<h1 className="text-3xl flex justify-center font-bold text-[#D8AE7E]">Welcome to the Admin Dashboard</h1>} />
+          <Route path="/" element={<h1 className="text-4xl font-extrabold text-center text-[#b8895a] mb-10 tracking-tight drop-shadow-lg">Welcome to the Admin Dashboard</h1>} />
           <Route path="/products" element={<AdminProductPage />} />
           <Route path="/products/addProducts" element={<AddProductForm />} />
           <Route path="/products/editProducts" element={<EditProductForm />} />
           <Route path="/orders" element={<AdminOrdersPage />} />
-          <Route path="/customers" element={<h1>Customers</h1>} />
+          <Route path="/customers" element={<h1 className='text-2xl text-[#b8895a] font-bold text-center'>Customers</h1>} />
           <Route path="/dashboard" element={<AdminDashboard/>} />
-
         </Routes>
       </div>
     </div>
